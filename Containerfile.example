@@ -1,0 +1,26 @@
+# Example Containerfile showing how to extend rapidctl-container with custom commands
+#
+# Usage:
+#   1. Fork rapidctl-container repo
+#   2. Add your commands to cmd/ and update commands.json there
+#   3. Build and publish to your GHCR
+#   4. Update examplectl's container_repo to point to your fork
+#
+# This file demonstrates the pattern for local development/testing:
+#   podman build -f Containerfile.example -t my-custom-container .
+#   # Then run examplectl with: container_repo="my-custom-container" baseline_version="latest"
+
+FROM ghcr.io/dalethestirling/rapidctl-container:latest
+
+# Copy custom commands into the standard command path
+COPY custom_cmds/ /opt/rapidctl/cmd/
+
+# Update commands.json to include new commands
+# In practice, you'd maintain commands.json in your forked rapidctl-container
+# This is a demo showing the merge pattern:
+COPY commands.json.example /opt/rapidctl/commands.json
+
+# If your commands need additional system packages, uncomment and add:
+# USER root
+# RUN dnf install -y <package> && dnf clean all
+# USER default

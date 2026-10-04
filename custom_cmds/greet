@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# Example custom command demonstrating rapidctl-container extension pattern
+# This command would be added to /opt/rapidctl/cmd/ in the extended container
+
+set -euo pipefail
+
+usage() {
+    cat <<EOF
+Usage: greet [OPTIONS] [NAME]
+
+Prints a personalized greeting.
+
+Arguments:
+  NAME        Name to greet (default: "World")
+
+Options:
+  -h, --help     Show this help message
+  -u, --uppercase  Convert greeting to uppercase
+  -t, --time       Include current time in greeting
+EOF
+}
+
+NAME="World"
+UPPERCASE=false
+INCLUDE_TIME=false
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        -u|--uppercase)
+            UPPERCASE=true
+            shift
+            ;;
+        -t|--time)
+            INCLUDE_TIME=true
+            shift
+            ;;
+        -*)
+            echo "Unknown option: $1" >&2
+            usage
+            exit 1
+            ;;
+        *)
+            NAME="$1"
+            shift
+            ;;
+    esac
+done
+
+GREETING="Hello, $NAME!"
+
+if [[ "$INCLUDE_TIME" == true ]]; then
+    GREETING="$GREETING The time is $(date '+%H:%M:%S')."
+fi
+
+if [[ "$UPPERCASE" == true ]]; then
+    GREETING="${GREETING^^}"
+fi
+
+echo "$GREETING"

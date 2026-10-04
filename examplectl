@@ -11,7 +11,7 @@ client = client.CtlClient()
 
 # Define details about the client here.
 client.container_repo = "ghcr.io/dalethestirling/rapidctl-container"
-client.baseline_version = "1771729391"
+client.baseline_version = "latest"
 client.client_version = "0.0.1"
 
 # Lets be a cli tool. 

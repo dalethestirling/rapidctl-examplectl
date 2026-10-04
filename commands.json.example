@@ -1,0 +1,51 @@
+{
+  "hello-world": {
+    "summary": "Prints a simple greeting."
+  },
+  "reflector": {
+    "summary": "Echoes whatever input is provided.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "input_string": {
+          "type": "string",
+          "description": "The string to reflect back."
+        }
+      },
+      "required": ["input_string"]
+    },
+    "argument_mapping": {
+      "positional": ["input_string"]
+    }
+  },
+  "greet": {
+    "summary": "Prints a personalized greeting with options.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name to greet",
+          "default": "World"
+        },
+        "uppercase": {
+          "type": "boolean",
+          "description": "Convert greeting to uppercase",
+          "default": false
+        },
+        "time": {
+          "type": "boolean",
+          "description": "Include current time in greeting",
+          "default": false
+        }
+      }
+    },
+    "argument_mapping": {
+      "positional": ["name"],
+      "flags": {
+        "uppercase": ["-u", "--uppercase"],
+        "time": ["-t", "--time"]
+      }
+    }
+  }
+}
