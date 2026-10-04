@@ -3,6 +3,7 @@
 import re
 import sys
 from rapidctl.cli.main import main
+from rapidctl.cli.mcp import run_mcp_server
 from rapidctl.bootstrap import client
 
 # Create client instance
@@ -15,6 +16,13 @@ client.client_version = "0.0.1"
 
 # Lets be a cli tool. 
 if __name__ == '__main__':
+    # Handle MCP server subcommand
+    if len(sys.argv) > 1 and sys.argv[1] == "mcp":
+        # Remove 'mcp' from argv so run_mcp_server sees clean args
+        sys.argv.pop(1)
+        run_mcp_server(client)
+        sys.exit(0)
+    
     try:
         client.connect()
     except Exception as e:
