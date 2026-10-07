@@ -1,0 +1,8 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "wrapper-dev": { "mode": "subagent", "description": "CLI wrapper changes", "permission": { "edit": "allow", "bash": "allow" } },
+    "local-test": { "mode": "subagent", "description": "Local container testing", "permission": { "edit": "deny", "bash": "allow" } }
+  },
+  "instructions": ["AGENTS.md"]
+}
