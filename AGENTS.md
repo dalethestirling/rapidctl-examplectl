@@ -1,7 +1,7 @@
 # AGENTS.md - examplectl Development Guide
 
 ## Project Overview
-Reference CLI wrapper demonstrating rapidctl library usage. Consumes rapidctl-container (or compatible fork) to execute commands in containerized environments.
+Reference CLI wrapper demonstrating rapidctl library usage. Consumes rapidctl-container (or compatible fork) to execute commands in containerized environments using Podman (default) or Docker.
 
 ## Version Alignment
 
@@ -9,6 +9,11 @@ Reference CLI wrapper demonstrating rapidctl library usage. Consumes rapidctl-co
 - **Default**: `baseline_version = "latest"` — tracks `rapidctl-container:latest` for "always working" demo
 - **Pinned**: Set `baseline_version = "<timestamp>"` (e.g., `1771729391`) to match a specific rapidctl-container publish
 - **Local dev**: Use `Containerfile.example` to build local container, set `container_repo = "my-custom-container"` and `baseline_version = "latest"`
+
+### Runtime Selection
+- **Podman** (default): `RAPIDCTL_EXEC_MODE=podman` or unset
+- **Docker**: `RAPIDCTL_EXEC_MODE=docker` (requires `pip install rapidctl[docker]`)
+- **Kubernetes**: `RAPIDCTL_EXEC_MODE=kubernetes`
 
 ### Synchronization with rapidctl-container
 | rapidctl-container Change | examplectl Action |
@@ -35,12 +40,14 @@ Reference CLI wrapper demonstrating rapidctl library usage. Consumes rapidctl-co
 
 ### Local Testing with Custom Container
 ```bash
-# Build extended container
+# Build extended container (Podman)
 podman build -f Containerfile.example -t my-custom-container .
 
-# Run examplectl against local build
-# Edit examplectl script temporarily or set env:
+# Run examplectl against local build (Podman)
 container_repo="my-custom-container" baseline_version="latest" ./examplectl greet
+
+# Run with Docker runtime
+RAPIDCTL_EXEC_MODE=docker container_repo="my-custom-container" baseline_version="latest" ./examplectl greet
 ```
 
 ### Running Tests
@@ -51,6 +58,8 @@ python3 -m pytest tests
 ### MCP Server
 ```bash
 ./examplectl mcp
+# Or with Docker runtime
+RAPIDCTL_EXEC_MODE=docker ./examplectl mcp
 ```
 
 ## File Purposes
@@ -58,4 +67,4 @@ python3 -m pytest tests
 - `Containerfile.example` — Demonstrates extending rapidctl-container with custom commands
 - `custom_cmds/` — Example custom commands for extension demo
 - `commands.json.example` — Shows merged commands.json with custom commands
-- `requirements.txt` — Python dependencies (rapidctl, podman)
+- `requirements.txt` — Python dependencies (rapidctl, podman, docker optional)

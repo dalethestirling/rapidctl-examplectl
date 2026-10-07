@@ -26,7 +26,9 @@ if __name__ == '__main__':
     try:
         client.connect()
     except Exception as e:
-        print(f"Failed to connect to Podman: {e}")
+        # Note: RAPIDCTL_EXEC_MODE controls runtime (podman|docker|kubernetes)
+        # Default is podman. Set RAPIDCTL_EXEC_MODE=docker to use Docker.
+        print(f"Failed to connect to container runtime: {e}")
         sys.exit(1)
 
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
